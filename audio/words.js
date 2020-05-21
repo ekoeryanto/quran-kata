@@ -1,7 +1,10 @@
 const fs = require('fs')
+const path = require('path')
 const { spawnSync } = require('child_process')
 
 const [surah, ayahFrom = 1, ...others] = process.argv.splice(2)
+
+const baseDir = path.join(__dirname, 'words', surah)
 
 const transcript = require(`../arabic/${surah}.json`)
 
@@ -12,9 +15,9 @@ for (const ayah of Object.keys(transcript).filter(x => +x >= +ayahFrom)) {
   // download format 001_002_003 [surah_ayah_word]
   for (let word = 1; word <= words; word++) {
     const filename = [surah, ayah, word].map((x) => String(x).padStart(3, '0')).join('_')
-    const targetFile = `./${surah}/${filename}.mp3`
+    const targetFile = path.join(baseDir, `${filename}.mp3`)
     if (continued || !fs.existsSync(targetFile)) {
-      const curl = spawnSync('curl', ['-LOC', '-', getURL(surah, filename)], { cwd: `./${surah}` })
+      const curl = spawnSync('curl', ['-LOC', '-', getURL(surah, filename)], { cwd: baseDir })
     }
   }
   console.log(`surah ${surah}:${ayah} done`)
