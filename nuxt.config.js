@@ -1,4 +1,5 @@
 const path = require('path')
+const { spawnSync } = require('child_process')
 const serveStatic = require('serve-static')
 
 const colors = require('vuetify/es5/util/colors').default
@@ -19,6 +20,19 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = {
   mode: 'universal',
   serverMiddleware,
+  hooks: {
+    generate: {
+      done (generator, errors) {
+        if (errors.length === 0 && process.env.NETLIFY) {
+          console.warn('moving audio/')
+          spawnSync('mv', [
+            path.join(__dirname, 'audio'),
+            generator.nuxt.options.generate.dir
+          ])
+        }
+      }
+    }
+  },
   /*
    ** Headers of the page
    */
