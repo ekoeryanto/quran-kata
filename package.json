@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "cli-progress": "^3.8.2",
     "parcel-bundler": "^1.12.4"
   }
 }
