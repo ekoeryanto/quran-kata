@@ -16,13 +16,13 @@ const continued = others.includes('-c') || others.includes('--resume') || others
 
 console.log(` * Downloading surah #${surah}`)
 bar1.start(transcriptKeys.length, 0)
-for (const ayah of transcriptKeys.filter((x) => +x >= +ayahFrom)) {
+for (const ayah of transcriptKeys.filter(x => +x >= +ayahFrom)) {
   // download format 001002 [surah+ayah]
-  const filename = [surah, ayah].map((x) => String(x).padStart(3, '0')).join('')
+  const filename = [surah, ayah].map(x => String(x).padStart(3, '0')).join('')
   const targetFile = path.join(baseDir, `${filename}.mp3`)
   const url = `https://arabic-ayah-1.audios.quranwbw.com/${filename}.mp3`
   if (continued || !fs.existsSync(targetFile)) {
-    const curl = spawnSync('curl', ['-LOC', '-', url], { cwd: baseDir })
+    spawnSync('curl', ['-LOC', '-', url], { cwd: baseDir })
   }
   bar1.update(+ayah)
 }

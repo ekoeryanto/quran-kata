@@ -20,10 +20,10 @@ for (const ayah of transcriptKeys.filter(x => +x >= +ayahFrom)) {
   const words = transcript[ayah].split('//').length
   // download format 001_002_003 [surah_ayah_word]
   for (let word = 1; word <= words; word++) {
-    const filename = [surah, ayah, word].map((x) => String(x).padStart(3, '0')).join('_')
+    const filename = [surah, ayah, word].map(x => String(x).padStart(3, '0')).join('_')
     const targetFile = path.join(baseDir, `${filename}.mp3`)
     if (continued || !fs.existsSync(targetFile)) {
-      const curl = spawnSync('curl', ['-LOC', '-', getURL(surah, filename)], { cwd: baseDir })
+      spawnSync('curl', ['-LOC', '-', getURL(surah, filename)], { cwd: baseDir })
     }
   }
   bar1.update(+ayah)
@@ -32,6 +32,6 @@ for (const ayah of transcriptKeys.filter(x => +x >= +ayahFrom)) {
 
 bar1.stop()
 
-function getURL(surah, fname) {
+function getURL (surah, fname) {
   return `https://words.audios.quranwbw.com/${surah}/${fname}.mp3`
 }
