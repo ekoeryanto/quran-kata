@@ -14,6 +14,9 @@ if (process.env.NODE_ENV !== 'production') {
   serverMiddleware.unshift({
     path: '/audio',
     handler: serveStatic(path.join(__dirname, 'audio'))
+  }, {
+    path: '/data',
+    handler: serveStatic(path.join(__dirname, 'data'))
   })
 }
 
@@ -24,9 +27,9 @@ module.exports = {
     generate: {
       done (generator, errors) {
         if (errors.length === 0 && process.env.NETLIFY) {
-          console.warn('moving audio/')
           spawnSync('mv', [
             path.join(__dirname, 'audio'),
+            path.join(__dirname, 'data'),
             generator.nuxt.options.generate.dir
           ])
         }
